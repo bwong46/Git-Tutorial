@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>타자 Test</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <div class="header">
+        <h1>타자 Test</h1>
+    </div>
+    <div class="word-display">
+        Test 시작
+    </div>
+    <div class="word-input-box">
+        <input type="text" class="word-input" onkeyup="enterkey()"/>
+    </div>
+    <div class="game-info">
+        <div>
+            진행도: <span class="word-Progress">0</span>/7
+        </div>
+        <div>
+            타자수: <span class="word-Typing">0</span>
+        </div>
+        <div>
+            맞춘 개수: <span class="word-right">0</span>/7
+        </div>
+    </div>
+    <div class="playground">
+        <div class="bar-container">
+            <progress class="progressTag" value="0" max="100"/>
+        </div>
+    </div>
+    <script src="js/main.js"></script>
+</body>
+</html>

@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <link rel="stylesheet" href="taja_css.css" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>타자 프로그램2</title>
+  </head>
+  <body>
+    <div id="taja">
+      <div id="taja_timer">600</div>
+      <input id="taja_typo" class="typo" type="text" value="" readonly />
+      <div id="taja_text">어물전 망신은 꼴뚜기가 시킨다.</div>
+      <input type="text" id="taja_input" maxlength="50" onkeyup="keyup()" onkeydown="keydown()" />
+      <div id="content"></div>
+    </div>
+
+    <script type="text/javascript">
+      var txt = "어물전 망신은 꼴뚜기가 시킨다.";
+      var txt_length = txt.length;
+      var pre_length = 0;
+      var backspace = 0;
+      var time = 600;
+      var length = 0;
+      var time_count = 0;
+
+      function keydown() {
+        if(time_count == 0) {
+          timer = setInterval(function() {
+            time--;
+            document.getElementById("taja_timer").innerText = time;
+          }, 1000);
+          time_count = 1;
+        }
+
+        if(event.keyCode === 8){
+          if (length > 0) {
+            backspace++;
+          }
+        }
+      }
+
+      function keyup() {
+        var content = document.getElementById("taja_input").value;
+        length = document.getElementById("taja_input").value.length;
+
+        if(length == 0) {
+          clearInterval(timer);
+          time = 600;
+          document.getElementById("taja_timer").innerText = time;
+          time_count = 0;
+          backspace = 0;
+        }
+
+        if(pre_length > length) {
+            pre_length = length;
+        }
+
+        var txt_ex = txt.substring(0, pre_length);
+        var content_ex = content.substring(0, pre_length);
+
+        if (event.keyCode === 8) {
+          if (txt_ex == content_ex) {
+            document.getElementById("taja_text").style.color = "black";
+          }
+        } else {
+          if (length > pre_length) {
+            if (txt_ex == content_ex) {
+              document.getElementById("taja_text").style.color = "black";
+            } else {
+              document.getElementById("taja_text").style.color = "red";
+            }
+          }
+        }
+
+        if (length >= txt_length) {
+          clearInterval(timer);
+          document.getElementById("taja_input").readOnly = true;
+          var real_time = 600 - time;
+          var last_content = "걸린 시간은 " + real_time + "초" +
+          ", 백스페이스 횟수는 " + backspace + "회";
+          document.getElementById("content").innerText = last_content;
+        }
+
+        pre_length = length;
+      }
+    </script>
+  </body>
+</html>
