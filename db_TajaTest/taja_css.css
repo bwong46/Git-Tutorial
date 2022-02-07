@@ -5,9 +5,16 @@ body {
 input:focus {
     outline: none;
 }
+#basic {
+  display: flex;
+  justify-content: center;
+	align-items: center;
+}
 #taja {
     margin-top: 40px;
-    margin-left: 200px;
+    width: 800px;
+    padding: 40px;
+    border: solid 2px black;
 }
 #taja_input {
     margin-top: 10px;
@@ -15,16 +22,31 @@ input:focus {
     border-top: 0;
     border-left: 0;
     border-right: 0;
-    border-bottom: solid 2px blue;
+    border-bottom: 2px solid #C7C7C7;
     cursor: pointer;
     font-size: 20px;
     width: 500px;
     height: 30px;
 }
-.typo {
-    padding: 0;
-    border: 0;
-    font-size: 20px;
-    width: 500px;
-    height: 30px;
+#taja_info {
+    display: flex;
+    font-size: 18px;
+}
+#taja_accuracy {
+  width: 70px;
+  background-color: pink;
+  text-align: center;
+}
+#taja_speed {
+  width: 70px;
+  background-color: skyblue;
+  text-align: center;
+}
+#taja_text {
+  margin-top: 30px;
+}
+#taja_next {
+  margin-top: 20px;
+  color: grey;
+  font-size: 18px;
 }

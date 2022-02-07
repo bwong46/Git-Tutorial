@@ -8,28 +8,63 @@
     <title>타자 프로그램2</title>
   </head>
   <body>
-    <div id="taja">
-      <div id="taja_timer">600</div>
-      <input id="taja_typo" class="typo" type="text" value="" readonly />
-      <div id="taja_text">어물전 망신은 꼴뚜기가 시킨다.</div>
-      <input type="text" id="taja_input" maxlength="50" onkeyup="keyup()" onkeydown="keydown()" />
-      <div id="content"></div>
+    <div id="basic">
+      <div id="taja">
+        <div id="taja_info">
+          정확하지 않은 정확도 <div id="taja_accuracy">0</div>
+          타수가 아닌 타수 <div id="taja_speed">0</div>
+        </div>
+        <div id="taja_text"></div>
+        <input type="text" id="taja_input" maxlength="50" onkeyup="keyup()" onkeydown="keydown()" />
+        <div id="taja_next"></div>
+      </div>
     </div>
 
     <script type="text/javascript">
-      var txt = "어물전 망신은 꼴뚜기가 시킨다.";
-      var txt_length = txt.length;
+      const txtArr = ['어물전 망신은 꼴뚜기가 시킨다.', '마지막에 웃는 자가 가장 잘 웃는 자이다.',
+                '세상에서 가장 아름다운 것은 세상 그 자체이다.', '아름다운 시작보다 아름다운 끝을 선택해라.',
+              '큰 희망은 큰 사람을 만든다.', '인간은 사회적 동물이다.', '모두의 책임은 아무의 책임도 아니다.']
       var pre_length = 0;
       var backspace = 0;
       var time = 600;
       var length = 0;
       var time_count = 0;
+      var taja_time = 0;
+      var sentence = 0;
+      var accuracy_count = 0;
+      var accuracy = 0;
+      var entire_count = 0;
+      var count = 0;
+      var txt = txtArr[sentence];
+      var txt_length = txt.length;
+      document.getElementById("taja_text").innerText = txt;
+      document.getElementById("taja_next").innerText = "NEXT " + txtArr[sentence+1];
 
       function keydown() {
+        document.getElementById("taja_input").style.borderBottom = "2px solid orange";
+        if(event.isComposing) {
+          count++;
+        } else if ((event.keyCode === 32) || (event.keyCode >= 48 && event.keyCode <= 90) ||
+                  (event.keyCode >= 96 && event.keyCode <= 111) ||
+                  (event.keyCode >= 186 && event.keyCode <= 192) ||
+                  (event.keyCode >= 220 && event.keyCode <= 222)) {
+            count++;
+        }
+
         if(time_count == 0) {
           timer = setInterval(function() {
             time--;
-            document.getElementById("taja_timer").innerText = time;
+            if(time < 0) {
+              window.location.href = 'taja2.html';
+            } else {
+              taja_time = 600-time;
+              if((isNaN(Math.floor((entire_count-backspace*2)/taja_time*60)) == true) || 
+                (Math.floor((entire_count-backspace*2)/taja_time*60) === Infinity)) {
+                  document.getElementById("taja_speed").innerText = 0;
+            } else {
+              document.getElementById("taja_speed").innerText = Math.floor((entire_count-backspace*2)/taja_time*60);
+            }
+            }
           }, 1000);
           time_count = 1;
         }
@@ -46,11 +81,19 @@
         length = document.getElementById("taja_input").value.length;
 
         if(length == 0) {
-          clearInterval(timer);
+          if(time_count > 0) {
+            clearInterval(timer);
+          }
           time = 600;
-          document.getElementById("taja_timer").innerText = time;
           time_count = 0;
           backspace = 0;
+          accuracy_count = 0;
+          taja_time = 0;
+          document.getElementById("taja_accuracy").innerText = 0;
+          count = 0;
+          entire_count = 0;
+          document.getElementById("taja_speed").innerText = 0;
+          document.getElementById("taja_input").style.borderBottom = "2px solid #C7C7C7";
         }
 
         if(pre_length > length) {
@@ -64,23 +107,69 @@
           if (txt_ex == content_ex) {
             document.getElementById("taja_text").style.color = "black";
           }
+          accuracy_count = 0;
+          for(let i=0; i<pre_length-1; i++) {
+            if(txt_ex.substring(i, i+1)===content_ex.substring(i, i+1)) {
+              accuracy_count++;
+            }
+          }
+          accuracy = Math.floor(accuracy_count/(pre_length-1) * 100);
+          if(isNaN(Math.floor(accuracy_count/(pre_length-1) * 100)) == true) {
+            document.getElementById("taja_accuracy").innerText = 0;
+          } else {
+            document.getElementById("taja_accuracy").innerText = accuracy;
+          }
         } else {
           if (length > pre_length) {
+            if(pre_length > 0) {
+              if(txt_ex.substring(pre_length-1, pre_length)===content_ex.substring(pre_length-1, pre_length)) {
+                accuracy_count++;
+                entire_count += count;
+              }
+              accuracy = Math.floor(accuracy_count/pre_length * 100);
+            }
+            document.getElementById("taja_accuracy").innerText = accuracy;
+            if((isNaN(Math.floor((entire_count-backspace*2)/taja_time*60)) == true) || 
+                (Math.floor((entire_count-backspace*2)/taja_time*60) === Infinity)) {
+                  document.getElementById("taja_speed").innerText = 0;
+            } else {
+              document.getElementById("taja_speed").innerText = Math.floor((entire_count-backspace*2)/taja_time*60);
+            }
             if (txt_ex == content_ex) {
               document.getElementById("taja_text").style.color = "black";
             } else {
               document.getElementById("taja_text").style.color = "red";
             }
+            count = 0;
           }
         }
 
-        if (length >= txt_length) {
+        if (length > txt_length) {
           clearInterval(timer);
-          document.getElementById("taja_input").readOnly = true;
-          var real_time = 600 - time;
-          var last_content = "걸린 시간은 " + real_time + "초" +
-          ", 백스페이스 횟수는 " + backspace + "회";
-          document.getElementById("content").innerText = last_content;
+          sentence++;
+          if(sentence >= txtArr.length) {
+            document.getElementById("taja_input").readOnly = true;
+          } else {
+            time = 600;
+            time_count = 0;
+            backspace = 0;
+            accuracy_count = 0;
+            taja_time = 0;
+            document.getElementById("taja_input").value = "";
+            count = 0;
+            entire_count = 0;
+            document.getElementById("taja_accuracy").innerText = 0;
+            document.getElementById("taja_speed").innerText = 0;
+            txt = txtArr[sentence];
+            txt_length = txt.length;
+            document.getElementById("taja_text").innerText = txt;
+            document.getElementById("taja_input").style.borderBottom = "2px solid #C7C7C7";
+            if (sentence+1 >= txtArr.length) {
+              document.getElementById("taja_next").innerText = "";
+            } else {
+              document.getElementById("taja_next").innerText = "NEXT " + txtArr[sentence+1];
+            }
+          }
         }
 
         pre_length = length;
