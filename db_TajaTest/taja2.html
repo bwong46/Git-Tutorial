@@ -12,11 +12,12 @@
       <div id="taja">
         <div id="taja_info">
           정확하지 않은 정확도 <div id="taja_accuracy">0</div>
-          타수가 아닌 타수 <div id="taja_speed">0</div>
+          정확하지 않은 현재 타수 <div id="taja_speed">0</div>
         </div>
         <div id="taja_text"></div>
         <input type="text" id="taja_input" maxlength="50" onkeyup="keyup()" onkeydown="keydown()" />
         <div id="taja_next"></div>
+        <div id="ex"></div>
       </div>
     </div>
 
@@ -129,6 +130,7 @@
               accuracy = Math.floor(accuracy_count/pre_length * 100);
             }
             document.getElementById("taja_accuracy").innerText = accuracy;
+            document.getElementById("ex").innerText = "타수 : " + entire_count;
             if((isNaN(Math.floor((entire_count-backspace*2)/taja_time*60)) == true) || 
                 (Math.floor((entire_count-backspace*2)/taja_time*60) === Infinity)) {
                   document.getElementById("taja_speed").innerText = 0;
