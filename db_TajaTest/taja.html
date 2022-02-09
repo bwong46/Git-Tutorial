@@ -5,7 +5,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <link rel="stylesheet" href="taja_css.css" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>타자 프로그램2</title>
+    <title>타자 프로그램1</title>
   </head>
   <body>
     <div id="basic">
@@ -42,16 +42,10 @@
       document.getElementById("taja_next").innerText = "NEXT " + txtArr[sentence+1];
 
       function keydown() {
-        document.getElementById("taja_input").style.borderBottom = "2px solid orange";
-        if(event.isComposing) {
+        if(event.keyCode === 32) {
           count++;
-        } else if ((event.keyCode === 32) || (event.keyCode >= 48 && event.keyCode <= 90) ||
-                  (event.keyCode >= 96 && event.keyCode <= 111) ||
-                  (event.keyCode >= 186 && event.keyCode <= 192) ||
-                  (event.keyCode >= 220 && event.keyCode <= 222)) {
-            count++;
         }
-
+        document.getElementById("taja_input").style.borderBottom = "2px solid orange";
         if(time_count == 0) {
           timer = setInterval(function() {
             time--;
@@ -62,9 +56,9 @@
               if((isNaN(Math.floor((entire_count-backspace*2)/taja_time*60)) == true) || 
                 (Math.floor((entire_count-backspace*2)/taja_time*60) === Infinity)) {
                   document.getElementById("taja_speed").innerText = 0;
-            } else {
-              document.getElementById("taja_speed").innerText = Math.floor((entire_count-backspace*2)/taja_time*60);
-            }
+              } else {
+              document.getElementById("taja_speed").innerText = Math.floor((entire_count-backspace*2/taja_time*60));
+              }
             }
           }, 1000);
           time_count = 1;
@@ -78,6 +72,14 @@
       }
 
       function keyup() {
+        if(event.isComposing) {
+          count++;
+        } else if ((event.keyCode >= 48 && event.keyCode <= 90) ||
+                  (event.keyCode >= 96 && event.keyCode <= 111) ||
+                  (event.keyCode >= 186 && event.keyCode <= 192) ||
+                  (event.keyCode >= 220 && event.keyCode <= 222)) {
+            count++;
+        }
         var content = document.getElementById("taja_input").value;
         length = document.getElementById("taja_input").value.length;
 
