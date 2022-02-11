@@ -15,7 +15,7 @@ let start_time; // 입력 시작 시간
 let end_time;  // 입력 끝난 시간
 let elapsedTime;  // 입력 끝난 시간 - 입력 시작 시간, // 딜레이 시간
 let time;
-let tiza_count = 0;  // 입력한 타자수를 저장
+let tia_count = 0;  // 입력한 타자수를 저장
 
 // const size = strWords.length / strWords[0].length;  // 배열에 저장된 행을 확인
 const strInput = document.querySelector('.str-input');
