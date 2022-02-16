@@ -16,20 +16,18 @@ let end_time;  // 입력 끝난 시간
 let elapsedTime;  // 입력 끝난 시간 - 입력 시작 시간, // 딜레이 시간
 let taja_count = 0;  // 입력한 타자수를 저장
 
-let len = 0;
-let tasu = 0;
-let acc = 0;
-let spd = 0;
-let current = 0;
-let time = 0;
-let timer = 0;
-let accuracy = 0;
-let backspace = 0;
+let len = 0; // 입력한 글자수
+let acc = 0; // 정확도 계산에 필요한 변수
+let spd = 0; // 타자 속도
+let current = 0; // 현재 위치
+let time = 0; // 문장을 입력하는데 걸린 시간
+let timer = 0; // 타이머가 작동 중인지 아닌지 확인하는 변수
+let accuracy = 0; // 정확도 
 
-let spdArr = [];
-let accArr = [];
-let avg_spd = 0;
-let avg_acc = 0;
+let spdArr = []; // 타자 속도 배열
+let accArr = []; //  정확도 배열
+let avg_spd = 0; // 평균 타자 속도
+let avg_acc = 0; // 평균 정확도
 
 // const size = strWords.length / strWords[0].length;  // 배열에 저장된 행을 확인
 const strInput = document.querySelector('.str-input');
@@ -60,7 +58,7 @@ function Speed() {
     // 현재속도 (타수-백스페이스 *2) / 경과시간(초) * 60초
     // 한컴타자는 백스페이스 * +3
     time += 0.01;
-    spd = Math.floor(acc*2*60/time);
+    spd = Math.floor(acc*60*1.8/time); 
     tajaDisplay.innerText = spd;
 }
 
@@ -72,7 +70,13 @@ function getStrWords() {
         k = 0;
 
         const randomIndex = Math.floor(Math.random() * strWords.length);
-        strText[i] = strWords[randomIndex]
+        strText[i] = strWords[randomIndex];
+        // (아마도) 이전 문장과 겹치지 않게 하는 코드
+        // let randomIndex = Math.floor(Math.random() * strWords.length);
+        // while (i > 0 && strText[i-1] == strWords[randomIndex]) {
+        //   randomIndex = Math.floor(Math.random() * strWords.length);
+        // }
+        // strText[i] = strWords[randomIndex];
 
         console.log("디스플레이:" + strText[i])
     }
@@ -103,6 +107,7 @@ function checkAccuracy() {
   var result = "";
   acc = 0;
   len = strInput.value.length;
+  // 타이머 시작
   if(!timer) {
     if(window.event.isComposing) {
       setTimer = setInterval(Speed, 10);
@@ -111,11 +116,14 @@ function checkAccuracy() {
   }
 
  if(len > 1 && count > 0) {
+   // 정확도 계산
     for(i=0; i<len; i++) {
       if(strInput.value.substring(i,i+1) == strText[current].substring(i, i+1)) {
         acc++;
       }
     }
+
+    // 오타 표시
     for(i=0; i<strText[current].length; i++) {
       if(strInput.value.substring(i, i+1) != strText[current].substring(i, i+1)
       && i < len-1) {
@@ -124,14 +132,22 @@ function checkAccuracy() {
         result += strText[current].substring(i, i+1);
       }
     }
+
+    // 정확도 출력
     accuracy = Math.floor(acc/len*100);
     accuracyDisplay.innerText = accuracy;
+
+    // 오타 표시 출력
     strDisplay.innerHTML = result;
+
+    // 정확도에 따라 글자색이 바뀌는 부분
     if(Math.floor(acc/len*100 == 100)) {
       accuracyDisplay.style.color = 'black';
     } else {
       accuracyDisplay.style.color = '#c85448';
     }
+
+    // 글자 수가 0일 때 타이머, 타자 속도, 정확도 초기화
   } else if(len == 0 && count > 0) {
     if(timer) {
       clearInterval(setTimer);
@@ -150,6 +166,7 @@ function checkMatch() {
     sum = 0;
     avg = 0;
 
+    // 처음 화면에서 엔터를 눌렀을 때
     if(count == 0 && window.event.keyCode == 13) {
       strDisplay.innerText = strText[count];
       setTimeout(() => strInput.value = "", 20) // strInput.value = ""; // input 창 초기화
@@ -158,13 +175,18 @@ function checkMatch() {
       strNextDisplay.innerText = 'Next 문장:　' +  strText_Next[count];
       count++;
       strInput.readOnly = false;
-    } else if(len >= strText[current].length) {
+    }
+    // 주어진 문장의 길이보다 입력한 문장의 길이가 더 길 때 
+    else if(len >= strText[current].length) {
+        // 엔터를 누르면
         if(window.event.keyCode == 13) {
           strDisplay.innerText = strText[count];
+          // 타이머 초기화
           if(timer) {
               clearInterval(setTimer);
               timer = 0;
           }
+          // 현재 위치를 1 증가시키고 배열에 타자 속도와 정확도를 저장
           if(count != 0) {
             current++;
             spdArr[0] = 0;
@@ -172,6 +194,7 @@ function checkMatch() {
             spdArr[current] = spd;
             accArr[current] = accuracy;
           }
+          // 시간, 정확도 변수, 타자 속도, 정확도 초기화
           time = 0;
           acc = 0;
           spd = 0;
@@ -228,6 +251,7 @@ function checkMatch() {
                 accuracyDisplay.style.color = '#c85448';
               }
 
+              // 타자 검사가 종료되었으므로 입력창에 입력하지 못하도록 설정
               strInput.placeholder = "";
               strInput.disabled = true;
           }
