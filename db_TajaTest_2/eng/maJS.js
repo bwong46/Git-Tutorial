@@ -108,10 +108,8 @@ function checkAccuracy() {
   acc = 0;
   len = strInput.value.length;
   if(!timer) {
-    if(window.event.keyCode >= 65 && window.event.keyCode <= 90) {
       setTimer = setInterval(Speed, 10);
       timer = 1;
-    }
   }
 
   if(window.event.isComposing && len==1 && count > 0) {
