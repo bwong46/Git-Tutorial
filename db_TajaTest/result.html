@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Result</title>
+</head>
+<script>
+  function getParameter(name) {
+    name = name.replace(/[\[]/, "\\[").replace(/[\]]/, "\\]");
+    var regex = new RegExp("[\\?&]" + name + "=([^&#]*)"),
+        results = regex.exec(location.search);
+    return results === null ? "" : decodeURIComponent(results[1].replace(/\+/g, " "));
+  }
+  var rst_spd = getParameter("result_speed");
+  var rst_acc = getParameter("result_accuracy");
+</script>
+<body>
+  <div id="speed"></div>
+  <div id="accuracy"></div>
+  <script>
+    document.getElementById("speed").innerText = "타자 속도는 " + rst_spd + "타";
+    document.getElementById("accuracy").innerText = "정확도는 " + rst_acc + "%";
+  </script>
+</body>
+</html>
