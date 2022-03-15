@@ -156,7 +156,6 @@ function checkMatch() {
       scoreDisplay.innerText = score;
       strNextDisplay.innerText = 'Next 문장:　' +  strText_Next[count];
       count++;
-      strInput.readOnly = false;
     } else if(len >= strText[current].length) {
         if(window.event.keyCode == 13) {
           strDisplay.innerText = strText[count];
