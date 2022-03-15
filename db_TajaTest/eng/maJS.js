@@ -106,16 +106,11 @@ function checkAccuracy() {
   acc = 0;
   len = strInput.value.length;
   if(!timer) {
-    if(window.event.keyCode >= 65 && window.event.keyCode <= 90) {
-      setTimer = setInterval(Speed, 10);
-      timer = 1;
-    }
+    setTimer = setInterval(Speed, 10);
+    timer = 1;
   }
 
-  if(window.event.isComposing && len==1 && count > 0) {
-    alert("한/영 키를 바꿔주세요.");
-    strInput.value= null;
-  } else if(len > 0 && count > 0) {
+  if(len > 0 && count > 0) {
     for(i=0; i<len; i++) {
       if(strInput.value.substring(i, i+1) == strText[current].substring(i, i+1)) {
         acc++;

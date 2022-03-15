@@ -109,10 +109,8 @@ function checkAccuracy() {
   len = strInput.value.length;
   // 타이머 시작
   if(!timer) {
-    if(window.event.isComposing) {
-      setTimer = setInterval(Speed, 10);
-      timer = 1;
-    }
+    setTimer = setInterval(Speed, 10);
+    timer = 1;
   }
 
  if(len > 1 && count > 0) {
@@ -174,7 +172,6 @@ function checkMatch() {
       scoreDisplay.innerText = score;
       strNextDisplay.innerText = 'Next 문장:　' +  strText_Next[count];
       count++;
-      strInput.readOnly = false;
     }
     // 주어진 문장의 길이보다 입력한 문장의 길이가 더 길 때 
     else if(len >= strText[current].length) {
@@ -254,6 +251,7 @@ function checkMatch() {
               // 타자 검사가 종료되었으므로 입력창에 입력하지 못하도록 설정
               strInput.placeholder = "";
               strInput.disabled = true;
+              location.href = 'result.html?result_speed=' + avg_spd + '&result_accuracy=' + avg_acc;
           }
           count++;
         }
