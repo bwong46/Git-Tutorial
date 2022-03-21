@@ -90,10 +90,11 @@ input:focus {
 }
 
 #spd {
+  font-size: 23px;
   position: absolute;
   width: 30px;
-  top: 139px;
-  left: 192px;
+  top: 132px;
+  left: 204px;
 }
 
 #acc {
