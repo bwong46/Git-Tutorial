@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- Go to www.addthis.com/dashboard to customize your tools -->
+    <script type="text/javascript" src="//s7.addthis.com/js/300/addthis_widget.js#pubid=ra-6235b55c4f6f67c7"></script>
+    <title>Result</title>
+</head>
+<script>
+  function getParameter(name) {
+    name = name.replace(/[\[]/, "\\[").replace(/[\]]/, "\\]");
+    var regex = new RegExp("[\\?&]" + name + "=([^&#]*)"),
+        results = regex.exec(location.search);
+    return results === null ? "" : decodeURIComponent(results[1].replace(/\+/g, " "));
+  }
+  var rst_spd = getParameter("result_speed");
+  var rst_acc = getParameter("result_accuracy");
+</script>
+<body>
+  <div id="speed"></div>
+  <div id="accuracy"></div>
+  <script>
+    document.getElementById("speed").innerText = "타자 속도는 " + rst_spd + "타";
+    document.getElementById("accuracy").innerText = "정확도는 " + rst_acc + "%";
+    if(rst_spd > 300){
+        document.write("<img src = 'img/level_01.png'>");
+    }
+    else if(rst_spd > 200){
+        document.write("<img src = 'img/level_02.png'>");
+    }
+    else if(rst_spd > 100){
+        document.write("<img src = 'img/level_03.png'>");
+    }
+    else if(rst_spd >= 0){
+        document.write("<img src = 'img/level_11.png'>");
+    }
+  </script>
+  
+  <!-- Go to www.addthis.com/dashboard to customize your tools -->
+  <div class="addthis_inline_share_toolbox"></div>
+  <button onclick="location.href='kor_main.html'">다시하기</button >
+</body>
+</html>
